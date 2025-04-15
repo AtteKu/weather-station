@@ -34,33 +34,46 @@ async function fetchWeatherData(latitude, longitude) {
         },
       };
   
-      const tbody = document.querySelector("#data-table3 tbody");
-      const len = weatherData.hourly.time.length;
-      
+      const tbody = document.querySelector("#data-table3 tbody");      
       const now = new Date();
-      const pastData = weatherData.hourly.time.filter(time => time <=now);
 
-      const start = Math.max(0, pastData.length - 20);
+      // Suodatetaan ja yhdistetään data, otetaan viimeiset 20 aiempaa tuntia
+      const pastData = weatherData.hourly.time
+      .map((time, index) => ({
+        time: time,
+        windspeed: weatherData.hourly.windspeed[index]
+      }))
+      .filter(entry => entry.time <= now)
+      .reverse();
+
+      const availableData = pastData.slice(0, 20);
+ 
+      let labels = [];
+      let windData = [];
   
-      
-      for (let i = start; i < len; i++) {
-        const dateString = pastData[i].toLocaleString("fi-Fi", {
+      for (let i = 0; i < availableData.length; i++) {
+        
+        const dateString = availableData[i].time.toLocaleString("fi-FI", {
           weekday: "long",
           year: "numeric",
           month: "2-digit",
           day: "2-digit"
         });
 
-        const timeString = pastData[i].toLocaleString("fi-Fi", {
+        const timeString = availableData[i].time.toLocaleString("fi-FI", {
             hour: "2-digit",
             minute: "2-digit"
           });
-  
-        const windTemp = weatherData.hourly.windspeed[i].toFixed(1);
 
+        const [hour, minute] = timeString.split(".");
+  
+        const windTemp = parseFloat(availableData[i].windspeed.toFixed(1));
         const windMperS = windTemp / 3.6;
-        
         const wind = Math.round(windMperS)
+        const windRounded = parseFloat(windMperS.toFixed(1));
+
+        labels.push(`${hour}:${minute}`);
+        windData.push(windRounded);
   
         const rowWind = document.createElement("tr");
   
@@ -71,12 +84,54 @@ async function fetchWeatherData(latitude, longitude) {
       `;
       
       tbody.appendChild(rowWind);
-  
+
       }
+
+      const ctx = document.getElementById("Graph1").getContext("2d");
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Wind Speed (m/s)',
+            data: windData,
+            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 2,
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'm/s'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Time'
+              }
+            }
+          }
+        }
+        
+      });
+
   
     } catch (error) {
       console.error("Error:", error);
     }
   }
+
+  
+
+
   
   fetchWeatherData(61.4991, 23.7871);
