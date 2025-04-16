@@ -35,7 +35,15 @@
     <div class="container mt-5 pt-5">
         <h1 class="secondary-header"><span class="secondary-header-text">Temperature</span></h1>
         <div>
-          <canvas id="Graph3" width="400" height="200"></canvas>
+          <canvas id="Temperature-graph" width="400" height="200"></canvas>
+        </div>
+        <div id="Temperature-stats" class="averages">
+          <p>Average Temperature last 7 days:<span id="average-span"></span></p>
+          <p>Median Temperature last 7 days:<span id="median-span"></span></p>
+          <p>Temperature Mode last 7 days:<span id="mode-span"></span></p>
+          <p>Range in Temperature last 7 days:<span id="range-span"></span></p>
+          <p>Temperature Standard Deviation last 7 days:<span id="sd-span"></span></p>
+          <p>Minimum and Maximum Temperatures last 7 days:<span id="minmax-span"></span></p>
         </div>
         <div class="table-wrapper">
         <table id="data-table1" class="table table-striped table-bordered">
@@ -56,6 +64,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js"> defer</script>
+    <script src="statisticsTemperature.js"> defer</script>
 </body>
 </html>

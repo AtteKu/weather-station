@@ -35,7 +35,15 @@
     <div class="container mt-5 pt-5">
       <h1 class="secondary-header"><span class="secondary-header-text">Rain</span></h1>
       <div>
-        <canvas id="Graph2" width="400" height="200"></canvas>
+        <canvas id="Rain-Graph" width="400" height="200"></canvas>
+      </div>
+      <div id="Rain-stats" class="averages">
+        <p>Average Rain amount last 7 days:<span id="average-span"></span></p>
+        <p>Median Rain amount last 7 days:<span id="median-span"></span></p>
+        <p>Rain Mode last 7 days:<span id="mode-span"></span></p>
+        <p>Range in Rain amount last 7 days:<span id="range-span"></span></p>
+        <p>Rain Standard Deviation last 7 days:<span id="sd-span"></span></p>
+        <p>Minimum and Maximum Rain amount last 7 days:<span id="minmax-span"></span></p>
       </div>
       <div class="table-wrapper">
       <table id="data-table2" class="table table-striped table-bordered">
@@ -56,6 +64,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script2.js"></script>
+    <script src="script2.js" defer></script>
+    <script src="statisticsRain.js"> defer</script>
 </body>
 </html>

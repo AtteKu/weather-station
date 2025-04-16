@@ -1,9 +1,19 @@
 async function fetchWeatherData(latitude, longitude) {
+
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const formatDate = (date) => date.toISOString().split("T")[0];
+
   const params = new URLSearchParams({
     latitude: latitude.toString(),
     longitude: longitude.toString(),
-    hourly: "temperature_2m,rain,windspeed_10m"
+    hourly: "temperature_2m,rain,windspeed_10m",
+    start_date: formatDate(yesterday),
+    end_date: formatDate(today),
   });
+
 
   const url = `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
 
@@ -35,6 +45,7 @@ async function fetchWeatherData(latitude, longitude) {
     };
 
     const tbody = document.querySelector("#data-table1 tbody");
+    tbody.innerHTML = "";
     const now = new Date();
 
     // Suodatetaan ja yhdistetään data, otetaan viimeiset 20 aiempaa tuntia
@@ -85,7 +96,7 @@ async function fetchWeatherData(latitude, longitude) {
       tbody.appendChild(rowTemp);
     }
 
-    const ctx = document.getElementById("Graph3").getContext("2d");
+    const ctx = document.getElementById("Temperature-graph").getContext("2d");
 
       new Chart(ctx, {
         type: 'line',
